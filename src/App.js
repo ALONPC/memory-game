@@ -1,17 +1,20 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import Cookies from "js-cookie";
 
 import "./App.css";
 
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { Welcome } from "./screens/Welcome/Welcome";
 import { MemoryGame } from "./screens/MemoryGame/MemoryGame";
 
 function App() {
+  const navigate = useNavigate();
+
   const goToFirstScreen = () => {
     return Cookies.get("playerName") ? (
-      <MemoryGame></MemoryGame>
+      <Navigate to="/welcome"></Navigate>
     ) : (
-      <Welcome></Welcome>
+      <Navigate to="/memoryGame"></Navigate>
     );
   };
 
