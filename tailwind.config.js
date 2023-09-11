@@ -28,6 +28,7 @@ module.exports = {
   darkMode: "class",
   theme: {
     colors: {
+      default: colors.rose,
       gray: colors.coolGray,
       blue: colors.lightBlue,
       red: colors.rose,
