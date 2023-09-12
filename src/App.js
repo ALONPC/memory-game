@@ -8,22 +8,27 @@ import { MemoryGame } from "./screens/MemoryGame/MemoryGame";
 import "./App.css";
 
 function App() {
-  // const goToFirstScreen = () => {
-  //   return Cookies.get("playerName") ? (
-  //     <Navigate to="/welcome"></Navigate>
-  //   ) : (
-  //     <Navigate to="/memoryGame"></Navigate>
-  //   );
-  // };
+  const goToFirstScreen = () => {
+    return Cookies.get("playerName") ? (
+      <Navigate to="/welcome"></Navigate>
+    ) : (
+      <Navigate to="/memoryGame"></Navigate>
+    );
+  };
 
   return (
     <div class="dark">
       <div className="layout">
-        <Routes>
-          {/* <Route path="/" element={goToFirstScreen()}></Route> */}
-          <Route path="/welcome" element={<Welcome></Welcome>}></Route>
-          <Route path="/memoryGame" element={<MemoryGame></MemoryGame>}></Route>
-        </Routes>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={goToFirstScreen()}></Route>
+            <Route path="/welcome" element={<Welcome></Welcome>}></Route>
+            <Route
+              path="/memoryGame"
+              element={<MemoryGame></MemoryGame>}
+            ></Route>
+          </Routes>
+        </div>
       </div>
     </div>
   );
