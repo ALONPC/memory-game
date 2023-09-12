@@ -26,30 +26,32 @@ export const Welcome = () => {
   };
 
   return (
-    <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <form class="space-y-6" onSubmit={handleSubmit}>
-        <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-          Welcome to the Memory Game! 🧠
-        </h1>
+    <div class="centered-content">
+      <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <form class="space-y-6" onSubmit={handleSubmit}>
+          <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+            Welcome to the Memory Game! 🧠
+          </h1>
 
-        <div>
-          <label
-            for="playerName"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Please tell us your name!
-          </label>
-        </div>
-        <Input
-          type="text"
-          name="playerName"
-          id="playerName"
-          placeholder="Your name"
-          value={playerName}
-          onChange={(e) => handleOnChangePlayerName(e)}
-        ></Input>
-        <Button type="submit">Play!</Button>
-      </form>
+          <div>
+            <label
+              for="playerName"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Please tell us your name!
+            </label>
+          </div>
+          <Input
+            type="text"
+            name="playerName"
+            id="playerName"
+            placeholder="Your name"
+            value={playerName}
+            onChange={(e) => handleOnChangePlayerName(e)}
+          ></Input>
+          <Button type="submit">Play!</Button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -19,16 +19,11 @@ function App() {
   return (
     <div class="dark">
       <div className="layout">
-        <div className="content">
-          <Routes>
-            <Route path="/" element={goToFirstScreen()}></Route>
-            <Route path="/welcome" element={<Welcome></Welcome>}></Route>
-            <Route
-              path="/memoryGame"
-              element={<MemoryGame></MemoryGame>}
-            ></Route>
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={goToFirstScreen()}></Route>
+          <Route path="/welcome" element={<Welcome></Welcome>}></Route>
+          <Route path="/memoryGame" element={<MemoryGame></MemoryGame>}></Route>
+        </Routes>
       </div>
     </div>
   );

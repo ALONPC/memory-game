@@ -12,6 +12,10 @@ export const MemoryGame = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [turns, setTurns] = useState(0);
+  const [successCount, setSuccessCount] = useState(0);
+  const [failCount, setFailCount] = useState(0);
+
   const loadMemoryCards = async () => {
     setLoading(true);
     try {
@@ -40,20 +44,42 @@ export const MemoryGame = () => {
     navigate("/welcome");
   };
 
+  const newGame = () => {};
+
   return loading ? (
     <Loading></Loading>
   ) : (
-    <div class="grid grid-cols-1 gap-6">
-      <h1 class="text-5xl font-extrabold dark:text-white">
+    <div className="memory-game">
+      <h1 class="memory-game__player-name text-5xl font-extrabold dark:text-white">
         {`Hi ${Cookies.get("playerName")}!`}
       </h1>
-      <div class="grid grid-cols-5 gap-4">
-        {cards.map((card) => {
-          return <Card key={card.meta.uuid} card={card}></Card>;
-        })}
-      </div>
-      <div>
-        <Button onClick={signOut}>Sign out</Button>
+      <div class="grid xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-8">
+        <div class="col-span-10 xs:col-span-12 md:col-span-10">
+          <div class="grid lg:grid-cols-8 md:grid-cols-6 sm:grid-cols-6 xs:grid-cols-4 gap-4">
+            {cards.map((card) => {
+              return <Card key={card.meta.uuid} card={card}></Card>;
+            })}
+          </div>
+        </div>
+        <div class="col-span-2 xs:col-span-12 md:col-span-2">
+          <div class="grid grid-rows-6 grid-flow-col gap-6">
+            <div class="block text-center row-start-1 row-span-3 grid grid-cols-1 gap-8 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+              <h3 class="text-3xl font-bold dark:text-white">Score</h3>
+              <h4 class="text-2xl font-bold dark:text-white">
+                <span class="bg-green-100 text-green-800 text-2xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-800 ml-2">
+                  {successCount}
+                </span>
+                {"-"}
+                <span class="bg-red-100 text-red-800 text-2xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-800 ml-2">
+                  {failCount}
+                </span>
+              </h4>
+              <h6 class="text-lg font-bold dark:text-white">Turn {turns}</h6>
+            </div>
+            <Button onClick={newGame}>New Game</Button>
+            <Button onClick={signOut}>Sign out</Button>
+          </div>
+        </div>
       </div>
     </div>
   );
