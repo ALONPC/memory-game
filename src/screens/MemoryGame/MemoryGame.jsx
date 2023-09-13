@@ -16,7 +16,34 @@ export const MemoryGame = () => {
   const [successCount, setSuccessCount] = useState(0);
   const [failCount, setFailCount] = useState(0);
 
-  const handleCards = () => {};
+  const handlePlayableCards = (cards) => {
+    const VALID_ANIMALS = [
+      "fox",
+      "cat",
+      "penguin",
+      "rabbit",
+      "turtle",
+      "bear",
+      "dolphin",
+      "mouse",
+      "squirrel",
+      "seal",
+    ];
+    let playableCards = cards.filter((card) =>
+      VALID_ANIMALS.includes(card?.meta?.name)
+    );
+    playableCards = [...playableCards, ...playableCards]; // duplicates the cards so there will be pairs for each one
+    playableCards = playableCards.map((card, index) => ({
+      ...card,
+      meta: { ...card.meta, uuid: card.meta.uuid + index },
+    }));
+    console.log(
+      "🚀 ~ file: MemoryGame.jsx:38 ~ handlePlayableCards ~ playableCards:",
+      playableCards
+    );
+    playableCards.sort(() => Math.random() - 0.5); // shuffles the array randomly
+    setCards(playableCards);
+  };
 
   const loadMemoryCards = async () => {
     setLoading(true);
@@ -25,10 +52,9 @@ export const MemoryGame = () => {
         "https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=20"
       );
       const {
-        data: { entries },
+        data: { entries: cards },
       } = response;
-      console.log(entries);
-      setCards(entries);
+      handlePlayableCards(cards);
     } catch (error) {
       //
     } finally {
@@ -52,6 +78,19 @@ export const MemoryGame = () => {
     alert("Game reset");
   };
 
+  const selectCard = (selectedCard) => {
+    console.log(
+      "🚀 ~ file: MemoryGame.jsx:74 ~ selectCard ~ card:",
+      selectedCard
+    );
+    const matchedCard = cards.find(
+      (card) => selectedCard?.meta?.uuid === card?.meta?.uuid
+    );
+    matchedCard.visible = true;
+    const newDeck = [...cards];
+    setCards(newDeck);
+  };
+
   return loading ? (
     <Loading></Loading>
   ) : (
@@ -63,7 +102,14 @@ export const MemoryGame = () => {
         <div class="xs:col-span-1 sm:col-span-1 md:col-span-10 lg:col-span-10">
           <div class="grid lg:grid-cols-8 md:grid-cols-7 sm:grid-cols-6 xs:grid-cols-4 gap-4">
             {cards.map((card) => {
-              return <Card key={card.meta.uuid} card={card}></Card>;
+              return (
+                <Card
+                  // visible={false}
+                  onClick={selectCard}
+                  key={card.meta.uuid}
+                  card={card}
+                ></Card>
+              );
             })}
           </div>
         </div>
