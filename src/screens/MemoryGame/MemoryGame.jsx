@@ -7,20 +7,17 @@ import { Button } from "../../components/Button/Button";
 import { Loading } from "../../components/Loading/Loading";
 import { Card } from "../../components/Card/Card";
 
-const VALID_ANIMALS = [
-  "fox",
-  "cat",
-  "penguin",
-  "rabbit",
-  "turtle",
-  "bear",
-  // "dolphin",
-  // "mouse",
-  // "squirrel",
-  // "seal",
-]; // ? only these images will be shown
+import {
+  FAIL_MESSAGES,
+  SUCCESS_MESSAGES,
+  VALID_ANIMALS,
+  shuffleRandomly,
+} from "../../contants";
 
 export const MemoryGame = () => {
+  const PLAYER_NAME = Cookies.get("playerName");
+  const WELCOME_MESSAGE = `Welcome ${PLAYER_NAME}!`;
+
   const navigate = useNavigate();
 
   const [cards, setCards] = useState([]);
@@ -33,6 +30,8 @@ export const MemoryGame = () => {
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
 
+  const [reactionMessage, setReactionMessage] = useState(WELCOME_MESSAGE);
+
   const handlePlayableCards = (cards) => {
     let playableCards = cards.filter((card) =>
       VALID_ANIMALS.includes(card?.meta?.name)
@@ -43,7 +42,7 @@ export const MemoryGame = () => {
       meta: { ...card.meta, uuid: card.meta.uuid + index },
       matched: false, // ? way to track whether is face up or face down
     })); // ? the duplicated cards will have a slightly different uuid than the original but still different so they can be identified
-    playableCards.sort(() => Math.random() - 0.5); // ? shuffles the cards randomly
+    shuffleRandomly(playableCards); // ? shuffles the cards randomly
     setCards(playableCards);
     setTurns(0);
   };
@@ -76,8 +75,9 @@ export const MemoryGame = () => {
   const newGame = () => {
     setFailCount(0);
     setSuccessCount(0);
+    resetTurn(WELCOME_MESSAGE);
     loadMemoryCards();
-    alert("Game reset");
+    alert("Game was reset");
   };
 
   const signOut = () => {
@@ -106,26 +106,39 @@ export const MemoryGame = () => {
             return card;
           });
         });
-        setSuccessCount((prevState) => prevState + 1);
-        resetTurn();
+        handleSuccess();
       } else {
-        setFailCount((prevState) => prevState + 1);
-        resetTurn();
+        handleFail();
       }
     }
   }, [choiceOne, choiceTwo]);
 
-  const resetTurn = () => {
+  const handleSuccess = () => {
+    setSuccessCount((prevState) => prevState + 1);
+    setReactionMessage(shuffleRandomly(SUCCESS_MESSAGES)[0]);
+    resetTurn("Keep it up!");
+  };
+
+  const handleFail = () => {
+    setFailCount((prevState) => prevState + 1);
+    setReactionMessage(shuffleRandomly(FAIL_MESSAGES)[0]);
+    resetTurn("You can do it!");
+  };
+
+  const resetTurn = (message = null) => {
     setTimeout(() => {
       setChoiceOne(null);
       setChoiceTwo(null);
+      setReactionMessage(message);
       setTurns((prevState) => prevState + 1);
     }, 800); // ? a delay to make the user see the card if matches before it is flipped back again in case of fail
   };
 
   useEffect(() => {
     if (!!successCount && cards.every((card) => card.matched)) {
-      alert("Congratulations!");
+      alert(
+        `Congratulations ${PLAYER_NAME}! your score: ${successCount} - ${failCount}`
+      );
     }
   }, [successCount]);
 
@@ -133,8 +146,8 @@ export const MemoryGame = () => {
     <Loading></Loading>
   ) : (
     <div className="memory-game">
-      <h1 class="memory-game__player-name text-5xl font-extrabold dark:text-white">
-        {`Hi ${Cookies.get("playerName")}!`}
+      <h1 class="text-center memory-game__reaction text-5xl font-extrabold dark:text-white">
+        {reactionMessage}
       </h1>
       <div class="grid xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-8">
         <div class="xs:col-span-1 sm:col-span-1 md:col-span-10 lg:col-span-10">
@@ -155,7 +168,7 @@ export const MemoryGame = () => {
         </div>
         <div class="xs:col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-2">
           <div class="grid grid-rows-6 xs:grid-rows-1 sm:grid-rows-1 md:grid-rows-1 lg:grid-rows-6 grid-flow-col gap-6">
-            <div class="block text-center row-start-1 row-span-3 grid grid-cols-1 gap-8 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="block text-center row-start-1 row-span-3 grid grid-cols-1 gap-8 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-purple-900 dark:border-white-700">
               <h3 class="text-3xl font-bold dark:text-white">Score</h3>
               <h4 class="text-2xl font-bold dark:text-white">
                 <span class="bg-green-100 text-green-800 text-2xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-800 ml-2">

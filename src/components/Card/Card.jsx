@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import cardBack from "../../assets/card_back.png";
+import cardBack from "../../assets/card_back_1.png";
 
 export const Card = ({ card, onClick, flipped }) => {
   const {
@@ -22,7 +22,7 @@ export const Card = ({ card, onClick, flipped }) => {
         // class="card max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
         className={flipped ? "card__flipped" : ""}
       >
-        <img className="card__front" src={url} alt={name} />
+        <img className={"card__front"} src={url} alt={name} />
         <img
           className="card__back"
           onClick={handleClick}

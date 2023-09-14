@@ -5,8 +5,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Welcome } from "./screens/Welcome/Welcome";
 import { MemoryGame } from "./screens/MemoryGame/MemoryGame";
 
-import "./App.css";
-
 function App() {
   const goToFirstScreen = () => {
     return Cookies.get("playerName") ? (
