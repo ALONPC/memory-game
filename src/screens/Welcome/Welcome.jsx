@@ -27,7 +27,7 @@ export const Welcome = () => {
 
   return (
     <div class="centered-content">
-      <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+      <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-purple-900 dark:border-gray-700">
         <form class="space-y-6" onSubmit={handleSubmit}>
           <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
             Welcome to the Memory Game! 🧠

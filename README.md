@@ -1,4 +1,4 @@
-# Memory Game
+# Memory Game 🧠
 
 ## Running the app locally
 

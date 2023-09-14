@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import cardBack from "../../assets/card_back_1.png";
+import cardBack from "../../assets/card_back.png";
 
 export const Card = ({ card, onClick, flipped }) => {
   const {

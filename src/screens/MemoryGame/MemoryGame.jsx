@@ -13,6 +13,7 @@ import {
   VALID_ANIMALS,
   shuffleRandomly,
 } from "../../contants";
+import { Modal } from "../../components/Modal/Modal";
 
 export const MemoryGame = () => {
   const PLAYER_NAME = Cookies.get("playerName");
@@ -182,7 +183,7 @@ export const MemoryGame = () => {
               <h6 class="text-lg font-bold dark:text-white">Turn {turns}</h6>
             </div>
             <Button onClick={newGame}>New Game</Button>
-            <Button onClick={signOut}>Sign out</Button>
+            <Button onClick={signOut}>Leave Game</Button>
           </div>
         </div>
       </div>
