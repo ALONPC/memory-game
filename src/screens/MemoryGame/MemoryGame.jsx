@@ -13,7 +13,6 @@ import {
   VALID_ANIMALS,
   shuffleRandomly,
 } from "../../contants";
-import { Modal } from "../../components/Modal/Modal";
 
 export const MemoryGame = () => {
   const PLAYER_NAME = Cookies.get("playerName");
