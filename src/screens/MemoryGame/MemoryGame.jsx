@@ -16,6 +16,9 @@ export const MemoryGame = () => {
   const [successCount, setSuccessCount] = useState(0);
   const [failCount, setFailCount] = useState(0);
 
+  const [choiceOne, setChoiceOne] = useState(null);
+  const [choiceTwo, setChoiceTwo] = useState(null);
+
   const handlePlayableCards = (cards) => {
     const VALID_ANIMALS = [
       "fox",
@@ -28,21 +31,18 @@ export const MemoryGame = () => {
       "mouse",
       "squirrel",
       "seal",
-    ];
+    ]; // ? only these images will be shown
     let playableCards = cards.filter((card) =>
       VALID_ANIMALS.includes(card?.meta?.name)
     );
-    playableCards = [...playableCards, ...playableCards]; // duplicates the cards so there will be pairs for each one
+    playableCards = [...playableCards, ...playableCards]; // ? duplicates the cards so there will be pairs for each one
     playableCards = playableCards.map((card, index) => ({
       ...card,
       meta: { ...card.meta, uuid: card.meta.uuid + index },
-    }));
-    console.log(
-      "🚀 ~ file: MemoryGame.jsx:38 ~ handlePlayableCards ~ playableCards:",
-      playableCards
-    );
-    playableCards.sort(() => Math.random() - 0.5); // shuffles the array randomly
+    })); // ? the duplicated cards will have a slightly different uuid than the original but still different so they can be identified
+    playableCards.sort(() => Math.random() - 0.5); // ? shuffles the cards randomly
     setCards(playableCards);
+    setTurns(0);
   };
 
   const loadMemoryCards = async () => {
@@ -58,37 +58,55 @@ export const MemoryGame = () => {
     } catch (error) {
       //
     } finally {
-      setLoading(false); // ! review this
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log(Cookies.get("playerName"));
+    console.log("🚀 ~ file: MemoryGame.jsx:13 ~ MemoryGame ~ cards:", cards);
+  }, [cards]);
+
+  useEffect(() => {
     loadMemoryCards();
   }, [Cookies.get("playerName")]);
+
+  const newGame = () => {
+    setFailCount(0);
+    setSuccessCount(0);
+    loadMemoryCards();
+    alert("Game reset");
+  };
 
   const signOut = () => {
     Cookies.remove("playerName");
     navigate("/welcome");
   };
 
-  const newGame = () => {
-    setFailCount(0);
-    setSuccessCount(0);
-    alert("Game reset");
+  // ? whether the user clicks a first or second selection, if choiceOne does not have a value, it will update itself then if choiceOne does have a value, it will update choiceTwo
+  const handleChoie = (card) => {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
-  const selectCard = (selectedCard) => {
-    console.log(
-      "🚀 ~ file: MemoryGame.jsx:74 ~ selectCard ~ card:",
-      selectedCard
-    );
-    const matchedCard = cards.find(
-      (card) => selectedCard?.meta?.uuid === card?.meta?.uuid
-    );
-    matchedCard.visible = true;
-    const newDeck = [...cards];
-    setCards(newDeck);
+  // ? card choices comparison
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (
+        choiceOne.meta.name === choiceTwo.meta.name &&
+        choiceOne.meta.uuid !== choiceTwo.meta.uuid
+      ) {
+        console.log("cards match");
+        resetTurn();
+      } else {
+        console.log("cards DO NOT match");
+        resetTurn();
+      }
+    }
+  }, [choiceOne, choiceTwo]);
+
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns((prevState) => prevState + 1);
   };
 
   return loading ? (
@@ -104,8 +122,7 @@ export const MemoryGame = () => {
             {cards.map((card) => {
               return (
                 <Card
-                  // visible={false}
-                  onClick={selectCard}
+                  onClick={handleChoie}
                   key={card.meta.uuid}
                   card={card}
                 ></Card>
