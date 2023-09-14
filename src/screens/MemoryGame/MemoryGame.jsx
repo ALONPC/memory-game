@@ -66,10 +66,6 @@ export const MemoryGame = () => {
   };
 
   useEffect(() => {
-    console.log("🚀 ~ file: MemoryGame.jsx:13 ~ MemoryGame ~ cards:", cards);
-  }, [cards]);
-
-  useEffect(() => {
     loadMemoryCards();
   }, [Cookies.get("playerName")]);
 

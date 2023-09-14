@@ -17,11 +17,7 @@ export const Card = ({ card, onClick, flipped }) => {
 
   return (
     <div className="card">
-      <div
-        // onMouseOver={() => console.log(card.meta.name, card.meta.uuid)} // ! remove after dev
-        // class="card max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-        className={flipped ? "card__flipped" : ""}
-      >
+      <div className={flipped ? "card__flipped" : ""}>
         <img className={"card__front"} src={url} alt={name} />
         <img
           className="card__back"
