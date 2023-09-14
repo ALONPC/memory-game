@@ -1,9 +1,12 @@
 # Memory Game
 
-npm i
-npm run start
+## Running the app locally
 
-## Technologies and techniques used
+`npm i`
+
+`npm run start`
+
+## Technologies and methodologies used
 
 ### UI
 
@@ -16,5 +19,9 @@ BEM
 ### Utilities
 
 eslint
+
 js-cookie
+
 axios
+
+prop-types
