@@ -1,5 +1,9 @@
 # Memory Game 🧠
 
+## See it in action here:
+ 
+https://alonpc.github.io/memory-game/
+
 ## Running the app locally
 
 `npm i`
