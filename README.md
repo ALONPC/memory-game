@@ -10,18 +10,17 @@
 
 ### UI
 
-Tailwind + Flowbite (Design System)
+- Tailwind + Flowbite (Design System)
 
 ### Styling
 
-BEM
+- BEM
 
 ### Utilities
 
-eslint
+- eslint
+- js-cookie
+- axios
+- prop-types
 
-js-cookie
-
-axios
-
-prop-types
+#### Happy gaming! (:
