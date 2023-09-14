@@ -17,12 +17,32 @@
   margin-bottom: 24px;
 }
 
-.card__front {
+.card {
+  position: relative;
+}
+
+.card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+
+.card .card__front {
+  transform: rotateY(90deg);
+  position: absolute;
+  transition: 2ms;
+}
+
+.card__back {
   /* height: 100%;
   width: 100%;
   object-fit: cover;
   border-radius: 8px; */
 }
 
-.card__back {
+.card__flipped .card__front {
+  transform: rotateY(0deg);
+  transition: 2ms;
 }

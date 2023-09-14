@@ -7,8 +7,22 @@ import { Button } from "../../components/Button/Button";
 import { Loading } from "../../components/Loading/Loading";
 import { Card } from "../../components/Card/Card";
 
+const VALID_ANIMALS = [
+  "fox",
+  "cat",
+  "penguin",
+  "rabbit",
+  "turtle",
+  "bear",
+  // "dolphin",
+  // "mouse",
+  // "squirrel",
+  // "seal",
+]; // ? only these images will be shown
+
 export const MemoryGame = () => {
   const navigate = useNavigate();
+
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -20,18 +34,6 @@ export const MemoryGame = () => {
   const [choiceTwo, setChoiceTwo] = useState(null);
 
   const handlePlayableCards = (cards) => {
-    const VALID_ANIMALS = [
-      "fox",
-      "cat",
-      "penguin",
-      "rabbit",
-      "turtle",
-      "bear",
-      "dolphin",
-      "mouse",
-      "squirrel",
-      "seal",
-    ]; // ? only these images will be shown
     let playableCards = cards.filter((card) =>
       VALID_ANIMALS.includes(card?.meta?.name)
     );
@@ -39,6 +41,7 @@ export const MemoryGame = () => {
     playableCards = playableCards.map((card, index) => ({
       ...card,
       meta: { ...card.meta, uuid: card.meta.uuid + index },
+      matched: false, // ? way to track whether is face up or face down
     })); // ? the duplicated cards will have a slightly different uuid than the original but still different so they can be identified
     playableCards.sort(() => Math.random() - 0.5); // ? shuffles the cards randomly
     setCards(playableCards);
@@ -92,22 +95,39 @@ export const MemoryGame = () => {
     if (choiceOne && choiceTwo) {
       if (
         choiceOne.meta.name === choiceTwo.meta.name &&
-        choiceOne.meta.uuid !== choiceTwo.meta.uuid
+        choiceOne.meta.uuid !== choiceTwo.meta.uuid // ? just to make sure the ids are not equal but the names are
       ) {
-        console.log("cards match");
+        setCards((prevState) => {
+          return prevState.map((card) => {
+            if (card.meta.name === choiceOne.meta.name) {
+              // ? changes the cards as matched if the choices share names
+              return { ...card, matched: true };
+            }
+            return card;
+          });
+        });
+        setSuccessCount((prevState) => prevState + 1);
         resetTurn();
       } else {
-        console.log("cards DO NOT match");
+        setFailCount((prevState) => prevState + 1);
         resetTurn();
       }
     }
   }, [choiceOne, choiceTwo]);
 
   const resetTurn = () => {
-    setChoiceOne(null);
-    setChoiceTwo(null);
-    setTurns((prevState) => prevState + 1);
+    setTimeout(() => {
+      setChoiceOne(null);
+      setChoiceTwo(null);
+      setTurns((prevState) => prevState + 1);
+    }, 800); // ? a delay to make the user see the card if matches before it is flipped back again in case of fail
   };
+
+  useEffect(() => {
+    if (!!successCount && cards.every((card) => card.matched)) {
+      alert("Congratulations!");
+    }
+  }, [successCount]);
 
   return loading ? (
     <Loading></Loading>
@@ -118,13 +138,16 @@ export const MemoryGame = () => {
       </h1>
       <div class="grid xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-8">
         <div class="xs:col-span-1 sm:col-span-1 md:col-span-10 lg:col-span-10">
-          <div class="grid lg:grid-cols-8 md:grid-cols-7 sm:grid-cols-6 xs:grid-cols-4 gap-4">
+          <div class="grid lg:grid-cols-6 md:grid-cols-6 sm:grid-cols-6 xs:grid-cols-4 gap-4">
             {cards.map((card) => {
               return (
                 <Card
                   onClick={handleChoie}
                   key={card.meta.uuid}
                   card={card}
+                  flipped={
+                    card === choiceOne || card === choiceTwo || card.matched
+                  } // ? three scenarios where the card should be shown as flipped
                 ></Card>
               );
             })}
