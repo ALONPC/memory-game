@@ -132,56 +132,61 @@ export const MemoryGame = () => {
 
   useEffect(() => {
     if (!!successCount && cards.every((card) => card.matched)) {
-      alert(
+      resetTurn(
         `Congratulations ${PLAYER_NAME}! your score: ${successCount} - ${failCount}`
       );
+      // alert(
+      //   `Congratulations ${PLAYER_NAME}! your score: ${successCount} - ${failCount}`
+      // );
     }
   }, [successCount]);
 
   return loading ? (
     <Loading></Loading>
   ) : (
-    <div className="memory-game">
-      <h1 class="text-center memory-game__reaction text-5xl font-extrabold dark:text-white">
-        {reactionMessage}
-      </h1>
-      <div class="grid xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-8">
-        <div class="xs:col-span-1 sm:col-span-1 md:col-span-10 lg:col-span-10">
-          <div class="grid lg:grid-cols-6 md:grid-cols-6 sm:grid-cols-6 xs:grid-cols-4 gap-4">
-            {cards.map((card) => {
-              return (
-                <Card
-                  onClick={handleChoie}
-                  key={card.meta.uuid}
-                  card={card}
-                  flipped={
-                    card === choiceOne || card === choiceTwo || card.matched
-                  } // ? three scenarios where the card should be shown as flipped
-                ></Card>
-              );
-            })}
-          </div>
-        </div>
-        <div class="xs:col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-2">
-          <div class="grid grid-rows-6 xs:grid-rows-1 sm:grid-rows-1 md:grid-rows-1 lg:grid-rows-6 grid-flow-col gap-6">
-            <div class="block text-center row-start-1 row-span-3 grid grid-cols-1 gap-8 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-purple-900 dark:border-white-700">
-              <h3 class="text-3xl font-bold dark:text-white">Score</h3>
-              <h4 class="text-2xl font-bold dark:text-white">
-                <span class="bg-green-100 text-green-800 text-2xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-800 ml-2">
-                  {successCount}
-                </span>
-                {"-"}
-                <span class="bg-red-100 text-red-800 text-2xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-800 ml-2">
-                  {failCount}
-                </span>
-              </h4>
-              <h6 class="text-lg font-bold dark:text-white">Turn {turns}</h6>
+    <>
+      <div className="memory-game">
+        <h1 class="text-center memory-game__reaction text-5xl font-extrabold dark:text-white">
+          {reactionMessage}
+        </h1>
+        <div class="grid xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-8">
+          <div class="xs:col-span-1 sm:col-span-1 md:col-span-10 lg:col-span-10">
+            <div class="grid lg:grid-cols-6 md:grid-cols-6 sm:grid-cols-6 xs:grid-cols-4 gap-4">
+              {cards.map((card) => {
+                return (
+                  <Card
+                    onClick={handleChoie}
+                    key={card.meta.uuid}
+                    card={card}
+                    flipped={
+                      card === choiceOne || card === choiceTwo || card.matched
+                    } // ? three scenarios where the card should be shown as flipped
+                  ></Card>
+                );
+              })}
             </div>
-            <Button onClick={newGame}>New Game</Button>
-            <Button onClick={signOut}>Leave Game</Button>
+          </div>
+          <div class="xs:col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-2">
+            <div class="grid grid-rows-6 xs:grid-rows-1 sm:grid-rows-1 md:grid-rows-1 lg:grid-rows-6 grid-flow-col gap-6">
+              <div class="block text-center row-start-1 row-span-3 grid grid-cols-1 gap-8 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-purple-900 dark:border-white-700">
+                <h3 class="text-3xl font-bold dark:text-white">Score</h3>
+                <h4 class="grid grid-cols-1 text-2xl font-bold dark:text-white">
+                  <span class="bg-green-100 text-green-800 text-2xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-800 ml-2">
+                    {successCount}
+                  </span>
+                  {"-"}
+                  <span class="bg-red-100 text-red-800 text-2xl font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-800 ml-2">
+                    {failCount}
+                  </span>
+                </h4>
+                <h6 class="text-lg font-bold dark:text-white">Turn {turns}</h6>
+              </div>
+              <Button onClick={newGame}>New Game</Button>
+              <Button onClick={signOut}>Leave Game</Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
